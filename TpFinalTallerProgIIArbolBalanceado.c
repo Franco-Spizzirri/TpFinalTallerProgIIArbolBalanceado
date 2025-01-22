@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 //Operaciones principales en un arbol AVL: busqueda, insercion y eliminacion, junto con las rotaciones necesarias para mantener el balance del arbol.
 
 //Estructura del nodo:
@@ -57,7 +58,7 @@ int main()
        printf("Ingrese un valor para el Arbol AVL:\n");
        scanf("%d", &numero);
        getchar();
-       raiz = insertar(raiz, numero); // Llamamos a la función insertar y actualizamos la raíz
+       raiz = insertar(raiz, numero); // Llamamos a la funciÃ³n insertar y actualizamos la raÃ­z
     }
 
 printf("Recorrido en nivel del Arbol AVL: \n");
@@ -70,7 +71,7 @@ if(respuesta == 's' || respuesta == 'S')
 {
     printf("Ingrese un valor para el Arbol AVL:\n");
     scanf("%d", &numero);
-    raiz = insertar(raiz, numero); // Llamamos a la función insertar y actualizamos la raíz
+    raiz = insertar(raiz, numero); // Llamamos a la funciÃ³n insertar y actualizamos la raÃ­z
     getchar();
     printf("Recorrido en nivel del Arbol AVL: \n");
     recorridoHorizontal(raiz);
@@ -95,7 +96,7 @@ if(respuesta == 's' || respuesta == 'S')
     printf("Que elemento deseas eliminar?:\n");
     scanf("%d", &numero);
 
-    raiz = eliminar(raiz, numero); // Llamamos a la función insertar y actualizamos la raíz
+    raiz = eliminar(raiz, numero); // Llamamos a la funciÃ³n insertar y actualizamos la raÃ­z
 
     printf("Recorrido en nivel del Arbol AVL despues de eliminar %d: \n", numero);
     recorridoHorizontal(raiz);
@@ -153,7 +154,7 @@ Nodo* rotacionDerecha(Nodo* y)
     actualizarAltura(y);
     actualizarAltura(x);
 
-    return x; // Ahora `x` es la nueva raíz del subárbol
+    return x; // Ahora `x` es la nueva raÃ­z del subÃ¡rbol
 }
 
 //rotacion simple a la izquierda
@@ -296,7 +297,7 @@ int eliminar(Nodo* nodo, int valor)
         {
             Nodo* sucesor = obtenerMinimo(nodo->h_der);
             nodo->dato = sucesor->dato; //Una vez que encontramos el sucesor, tomamos el valor de ese nodo y lo copiamos al nodo que estamos eliminando. De esta manera, el nodo que estamos eliminando es reemplazado por el valor del sucesor.
-            nodo->h_der = eliminar(nodo->h_der, sucesor->dato); //Ahora, necesitamos eliminar el sucesor en el subárbol derecho, ya que hemos copiado su valor al nodo a eliminar. Es importante que eliminemos el sucesor, ya que ha sido copiado al nodo original, pero aún sigue existiendo en el árbol.
+            nodo->h_der = eliminar(nodo->h_der, sucesor->dato); //Ahora, necesitamos eliminar el sucesor en el subÃ¡rbol derecho, ya que hemos copiado su valor al nodo a eliminar. Es importante que eliminemos el sucesor, ya que ha sido copiado al nodo original, pero aÃºn sigue existiendo en el Ã¡rbol.
         }
     }
 
@@ -340,9 +341,9 @@ int eliminar(Nodo* nodo, int valor)
 Cola*crearCola(int capacidad)
 {
     Cola* cola = (Cola*)malloc(sizeof(Cola)); //asignamos memoria a la cola
-    cola->arreglo = (Nodo**)malloc(capacidad*sizeof(Nodo*));//reservando memoria para un arreglo de tamaño capacidad (int) donde cada elemento es un puntero a Nodo. Solo contiene direcciones de memoria, no el nodo en si.
-    cola->frente = 0;// es el indice donde se va a colocar el primer elemento de la cola. Señala el primer elemento que se va a sacar.
-    cola->ultimo = -1; // es la ultima posicion ocupada en la cola, lugar donde se agregara el primer elemento. Señala que el primer elemento se encuentra en la posicion 0 del arreglo (xq cuando se inserte un elemento pasa de -1 a 0).
+    cola->arreglo = (Nodo**)malloc(capacidad*sizeof(Nodo*));//reservando memoria para un arreglo de tamaÃ±o capacidad (int) donde cada elemento es un puntero a Nodo. Solo contiene direcciones de memoria, no el nodo en si.
+    cola->frente = 0;// es el indice donde se va a colocar el primer elemento de la cola. SeÃ±ala el primer elemento que se va a sacar.
+    cola->ultimo = -1; // es la ultima posicion ocupada en la cola, lugar donde se agregara el primer elemento. SeÃ±ala que el primer elemento se encuentra en la posicion 0 del arreglo (xq cuando se inserte un elemento pasa de -1 a 0).
     cola->capacidad = capacidad;// asignamos el parametro capacidad al campo capacidad de la estructura cola, garantizando q tenga un limite en la cantidad de elementos que puede almacenar (tamb para verificar si esta llena o vacia).
     return cola;
 }
@@ -360,8 +361,8 @@ void encola(Cola* cola, Nodo* nodo)
 
 Nodo* desencola(Cola* cola)
 {
-    Nodo* nodo = cola->arreglo[cola->frente];//Obtiene el nodo que está en el frente de la cola
-    cola->frente++;//Incrementa el índice `frente` para apuntar al siguiente nodo
+    Nodo* nodo = cola->arreglo[cola->frente];//Obtiene el nodo que estÃ¡ en el frente de la cola
+    cola->frente++;//Incrementa el Ã­ndice `frente` para apuntar al siguiente nodo
     return nodo; //Devuelve el nodo desencolado
 }
 
