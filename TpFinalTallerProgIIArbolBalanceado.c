@@ -31,8 +31,8 @@ Nodo* rotacionIzquierdaDerecha(Nodo* nodo);
 Nodo* rotacionDerechaIzquierda(Nodo* nodo);
 Nodo* insertar(Nodo* nodo, int valor);
 Nodo* nuevoNodo(int valor); //es puntero a nodo xq le estoy pasando un nuevo valor, pero se lo devuelvo con una direccion.
-int obtenerMinimo(Nodo* nodo);
-int eliminar(Nodo* nodo, int valor);
+Nodo* obtenerMinimo(Nodo* nodo);
+Nodo* eliminar(Nodo* nodo, int valor);
 Cola* crearCola(int capacidad);
 int colaVacia(Cola* cola);
 void encola(Cola* cola, Nodo* nodo);
@@ -45,6 +45,7 @@ int max(int a, int b);
 int main()
 {
     Nodo* raiz = NULL; // esta es la raiz de mi arbol, cada vez q inserto un numero se actualiza ese puntero segun el resutlado de la insercion.
+    int cont;
     int numero;
     char opcion;
 
@@ -72,7 +73,7 @@ while(opcion != '3')
     case '2':
         if(raiz == NULL)
         {
-            printf("Arbol AVL vacio. No se puede eliminar un elemento. \n");
+            printf("Arbol AVL vacio. No se puede eliminar el elemento. \n");
             printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
             break;
         }
@@ -83,7 +84,7 @@ while(opcion != '3')
             raiz = eliminar(raiz, numero);
             printf("Recorrido horizontal con %d eliminado: \n", numero);
             recorridoHorizontal(raiz);
-            printf("\nAltura actual del Arbol AVL: %d", altura(raiz));
+            printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
             break;
         }
 
@@ -135,7 +136,7 @@ Nodo* rotacionDerecha(Nodo* y) // toma puntero a un nodo Y (raiz del subarbol) y
 
     x->h_der = y; // x se hace raiz del subarbol, su hijo derecho para a ser y.
     y->h_izq = t; // hay q actualizar el hijo izquierdo de Y (que era donde apuntaba antes). ahora apunta a t, que era el hijo derecho original de X.
-                  // O sea, ese hijo izquierdo q no "apunta" a nada, hacemos q apunte a T como h.izq.
+                  // O sea, ese hijo izquierdo q no "apunta" a nada, hacemos q apunte a T como h.der.
 
     actualizarAltura(y);
     actualizarAltura(x);
@@ -156,37 +157,37 @@ Nodo* rotacionIzquierda(Nodo* x)
     actualizarAltura(x);
     actualizarAltura(y);
 
-    return y; //retornas Y como la nueva raiz del arbol.
+    return y;
 }
 //Rotacion doble izquierda-derecha (doble a la derecha)
 Nodo* rotacionIzquierdaDerecha(Nodo* nodo)
 {
-    nodo->h_izq = rotacionIzquierda(nodo->h_izq); //rotacion izquierda sobre el hijo izquierdo. Aca queda Y arriba y X a la izquierda, la temporal a la derecha.
-    return rotacionDerecha(nodo);// rotacion derecha sobre el nodo original. Aca el nodo pasa a ser la nueva Y, y el hijo izquierdo la nueva X. Por eso despues vos rotas el nodo origial hacia la derecha y subis el hijo izquierdo como nueva raiz. Por que se actualizan las alturas.
+    nodo->h_izq = rotacionIzquierda(nodo->h_izq);
+    return rotacionDerecha(nodo);
 }
 
 //Rotacion doble derecha-izquierda (doble a la izquierda)
 Nodo* rotacionDerechaIzquierda(Nodo* nodo)
 {
-    nodo->h_der = rotacionDerecha(nodo->h_der);//rotacion derecha sobre hijo derecho. Aca queda X arriba e Y a la derecha, T a la izquierda.
-    return rotacionIzquierda(nodo);//rotacion izquierda sobre el nodo original. Aca despues se actualiza y el nodo original es X y el hijo derecho Y. Por eso despues rotas el nodo original hacia la izquierda y subis el hijo derecho.
+    nodo->h_der = rotacionDerecha(nodo->h_der);
+    return rotacionIzquierda(nodo);
 }
 
 Nodo* nuevoNodo(int valor) // le tenes que dar una direccion y un valor al nuevo nodo
 {
     Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo)); //asigno la memoria para un Nodo nuevo.
-    nuevo->dato = valor; //el dato del nodo se lo asignas ahora al valor del nodo.
+    nuevo->dato = valor; //le asigno un valor a ese nodo.
     nuevo->h_izq = NULL;
     nuevo->h_der = NULL; // inicializo ambos hijos en null.
     nuevo->altura = 1; // inicializo la altura en 1.
-    return nuevo;// retornas el nodo nuevo.
+    return nuevo;
 }
 
-Nodo* insertar(Nodo* nodo, int valor) // tenes que insertar el nodo con su  direccion y su valor
+Nodo* insertar(Nodo* nodo, int valor)
 {
     if(nodo == NULL)
     {
-        return nuevoNodo(valor); // si el arbol esta vacio, creo un nuevo nodo raiz.
+        return nuevoNodo(valor);
     }
 
     if(valor < nodo->dato) // si el valor es menor al dato, lo insertamos en el subarbol izq.
@@ -214,22 +215,22 @@ Nodo* insertar(Nodo* nodo, int valor) // tenes que insertar el nodo con su  dire
 
     // Casos de desbalance (rotaciones)
 
-    if(balance > 1 && valor < nodo->h_izq->dato) // se inserta un nodo en el subarbol izquierdo del hijo izquierdo.
+    if(balance > 1 && valor < nodo->h_izq->dato) // caso izq-izq
     {
         return rotacionDerecha(nodo);
     }
 
-    else if(balance < -1 && valor > nodo->h_der->dato)//se inserta un nodo en el subarbol derecho del hijo derecho.
+    else if(balance < -1 && valor > nodo->h_der->dato)// caso der-der.
     {
         return rotacionIzquierda(nodo);
     }
 
-    else if(balance > 1 && valor > nodo->h_izq->dato)//se inserta un nodo en el subarbol derecho del hijo izquierdo.
+    else if(balance > 1 && valor > nodo->h_izq->dato)//caso rotacion doble a la derecha
     {
         return rotacionIzquierdaDerecha(nodo);
     }
 
-    else if(balance < -1 && valor < nodo->h_der->dato) //se inserta un nodo en el subarbol izquierdo del hijo derecho.
+    else if(balance < -1 && valor < nodo->h_der->dato) //caso rotacion doble a la izq
     {
         return rotacionDerechaIzquierda(nodo);
     }
@@ -237,24 +238,24 @@ Nodo* insertar(Nodo* nodo, int valor) // tenes que insertar el nodo con su  dire
     return nodo;
 }
 
-int obtenerMinimo(Nodo* nodo)
+Nodo* obtenerMinimo(Nodo* nodo)
 {
     while(nodo->h_izq != NULL) // mientras no encontremos el valor minimo
     {
         nodo = nodo->h_izq; // nos movemos al hijo izquierdo
     }
 
-    return nodo->dato; // ya encontrado (cuando es = NULL), devolvemos el nodo con valor minimo
+    return nodo->dato; // ya encontrado, devolvemos el nodo con valor minimo
 }
 
-int eliminar(Nodo* nodo, int valor)
+Nodo* eliminar(Nodo* nodo, int valor)
 {
     if(nodo == NULL)
     {
-        return nodo; // si el arbol esta vacio, no elimina nada. Retorna el nodo original o NULL en este caso.
+        return nodo;
     }
 
-    else if(valor < nodo->dato) // cuando el valor es menor que el valor del nodo actual, esta en el subarbol izq.
+    else if(valor < nodo->dato) // cuando el valor es menor que ek valor del nodo actual, esta en el subarbol izq.
     {
         nodo->h_izq = eliminar(nodo->h_izq, valor);
     }
@@ -266,16 +267,16 @@ int eliminar(Nodo* nodo, int valor)
 
     else
     {
-        //Caso de que tenga un hijo.
+        //Nodo no encontrado
         if(nodo->h_izq == NULL || nodo->h_der == NULL)
         {
             if(nodo->h_izq != NULL)
             {
-                nodo = nodo->h_izq;// si tiene hijo izquierdo, lo sustituye.
+                nodo = nodo->h_izq;
             }
             else if(nodo->h_der == NULL)
             {
-                nodo = nodo->h_der;// si tiene hijo derecho, lo sustituye.
+                nodo = nodo->h_der;
             }
         }
 
@@ -301,22 +302,22 @@ int eliminar(Nodo* nodo, int valor)
 
     //Casos de desbalance
 
-    if(balance > 1 && factorBalanceo(nodo->h_izq)>= 0) // eliminamos un nodo en el subarbol derecho de h_izq. Se usa cuando el subarbol izquierdo es mas alto y su hijo izquierdo tambien.
+    if(balance > 1 && factorBalanceo(nodo->h_izq)>= 0)
     {
         return rotacionDerecha(nodo);
     }
 
-    else if(balance > 1 && factorBalanceo(nodo->h_izq) < 0)// eliminamos un nodo en el subarbol derecho de h_izq. Se usa cuando el subarbol izquierdo es mas alto, pero su hijo derecho es mas alto.
+    else if(balance > 1 && factorBalanceo(nodo->h_izq) < 0)
     {
         return rotacionIzquierdaDerecha(nodo);
     }
 
-    else if(balance < -1 && factorBalanceo(nodo->h_der) <= 0)//eliminamos un nodo en el subarbol izquierdo de h_der. Se usa cuando el subarbol derecho es mas alto y su hijo derecho tambien.
+    else if(balance < -1 && factorBalanceo(nodo->h_der) <= 0)
     {
         return rotacionIzquierda(nodo);
     }
 
-    else if(balance < -1 && factorBalanceo(nodo->h_der) > 0)// eliminamos un nodo en el subarbol izquierdo de h_der. Se usa cuando el subarbol derecho es mas alto, pero su hijo izquierdo es mas alto.
+    else if(balance < -1 && factorBalanceo(nodo->h_der) > 0)
     {
         return rotacionDerechaIzquierda(nodo);
     }
