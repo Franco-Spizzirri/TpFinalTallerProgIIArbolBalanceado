@@ -30,7 +30,7 @@ Nodo* rotacionIzquierda(Nodo* x);
 Nodo* rotacionIzquierdaDerecha(Nodo* nodo);
 Nodo* rotacionDerechaIzquierda(Nodo* nodo);
 Nodo* insertar(Nodo* nodo, int valor);
-Nodo* nuevoNodo(int valor); //es puntero a nodo xq le estoy pasando un nuevo valor, pero se lo devuelvo con una direccion.
+Nodo* nuevoNodo(int valor);
 Nodo* obtenerMinimo(Nodo* nodo);
 Nodo* eliminar(Nodo* nodo, int valor);
 Cola* crearCola(int capacidad);
@@ -44,7 +44,7 @@ int max(int a, int b);
 
 int main()
 {
-    Nodo* raiz = NULL; // esta es la raiz de mi arbol, cada vez q inserto un numero se actualiza ese puntero segun el resutlado de la insercion.
+    Nodo* raiz = NULL;
     int numero;
     char opcion;
 
@@ -102,15 +102,15 @@ while(opcion != '3')
 return 0;
 }
 
-int altura(Nodo* nodo) // va a devolver un entero con la altura del nodo.
+int altura(Nodo* nodo)
 {
-    if (nodo == NULL ) // si el nodo es NULL, quiere decir que no hay un nodo (arbol vacio o raiz de un arbol vacío).
+    if (nodo == NULL )
     {
-        return 0; // entonces retorna la altura, que va a ser 0
+        return 0;
     }
     else
     {
-        return nodo->altura; // en caso de que no, simplemente devuelve la altura que está almacenada en el nodo mismo.
+        return nodo->altura;
     }
 }
 
@@ -118,40 +118,37 @@ int factorBalanceo(Nodo* nodo)
 {
     if(nodo == NULL)
     {
-        return 0; // si el nodo es vacio, el balanceo es 0.
+        return 0;
     }
 
     else
     {
-        return (altura(nodo->h_izq) - altura(nodo->h_der)); // return para devolver el resultado de la resta de la altura del hijo izquierdo menos el derecho.
+        return (altura(nodo->h_izq) - altura(nodo->h_der));
     }
 }
-
 // rotacion simple a la derecha
-Nodo* rotacionDerecha(Nodo* y) // toma puntero a un nodo Y (raiz del subarbol) y devuelve un puntero al nuevo nodo que será la raíz del subarbol despues de realizar la rotacion. Es de tipo *nodo ya que la raiz del subarbol puede cambiar durante la rotacion.
+Nodo* rotacionDerecha(Nodo* y)
 {
     Nodo* x = y->h_izq; // variable auxiliar para no perder referencia.
     Nodo* t = x->h_der; // variable temporal para hacer el cambio.
 
-    x->h_der = y; // x se hace raiz del subarbol, su hijo derecho para a ser y.
-    y->h_izq = t; // hay q actualizar el hijo izquierdo de Y (que era donde apuntaba antes). ahora apunta a t, que era el hijo derecho original de X.
-                  // O sea, ese hijo izquierdo q no "apunta" a nada, hacemos q apunte a T como h.der.
+    x->h_der = y;
+    y->h_izq = t;
 
     actualizarAltura(y);
     actualizarAltura(x);
 
-    return x; // Ahora `x` es la nueva raíz del subárbol
+    return x;
 }
 
 //rotacion simple a la izquierda
-
 Nodo* rotacionIzquierda(Nodo* x)
 {
     Nodo* y = x->h_der;
     Nodo* t = y->h_izq;
 
-    y->h_izq = x; //pasa a ser raiz del subarbol, X es el hijo izquierdo ahora.
-    x->h_der = t; // apunto el hijo derecho a la variable temporal que antes apuntaba al hijo izq de Y.
+    y->h_izq = x;
+    x->h_der = t;
 
     actualizarAltura(x);
     actualizarAltura(y);
@@ -172,13 +169,13 @@ Nodo* rotacionDerechaIzquierda(Nodo* nodo)
     return rotacionIzquierda(nodo);
 }
 
-Nodo* nuevoNodo(int valor) // le tenes que dar una direccion y un valor al nuevo nodo
+Nodo* nuevoNodo(int valor)
 {
-    Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo)); //asigno la memoria para un Nodo nuevo.
-    nuevo->dato = valor; //le asigno un valor a ese nodo.
+    Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
+    nuevo->dato = valor;
     nuevo->h_izq = NULL;
-    nuevo->h_der = NULL; // inicializo ambos hijos en null.
-    nuevo->altura = 1; // inicializo la altura en 1.
+    nuevo->h_der = NULL;
+    nuevo->altura = 1;
     return nuevo;
 }
 
@@ -189,24 +186,24 @@ Nodo* insertar(Nodo* nodo, int valor)
         return nuevoNodo(valor);
     }
 
-    if(valor < nodo->dato) // si el valor es menor al dato, lo insertamos en el subarbol izq.
+    if(valor < nodo->dato)
     {
         nodo->h_izq = insertar(nodo->h_izq, valor);
     }
 
-    else if(valor > nodo->dato)// si es mayor, en el derecho
+    else if(valor > nodo->dato)
     {
         nodo->h_der = insertar(nodo->h_der, valor);
     }
 
-    else // estamos queriendo insertar un valor duplicado (mismo valor) y no se permiten en este arbol. Retornamos el nodo actual sin hacer nada.
+    else
     {
         return nodo;
     }
 
     // Actualizamos la altura del nodo
 
-    nodo->altura = 1 + max(altura(nodo->h_izq), altura(nodo->h_der)); //sacas el maximo entre ambos subarboles y se le suma 1.
+    nodo->altura = 1 + max(altura(nodo->h_izq), altura(nodo->h_der));
 
     //Calcular factor balanceo:
 
@@ -239,12 +236,12 @@ Nodo* insertar(Nodo* nodo, int valor)
 
 Nodo* obtenerMinimo(Nodo* nodo)
 {
-    while(nodo->h_izq != NULL) // mientras no encontremos el valor minimo
+    while(nodo->h_izq != NULL)
     {
-        nodo = nodo->h_izq; // nos movemos al hijo izquierdo
+        nodo = nodo->h_izq;
     }
 
-    return nodo->dato; // ya encontrado, devolvemos el nodo con valor minimo
+    return nodo->dato;
 }
 
 Nodo* eliminar(Nodo* nodo, int valor)
@@ -254,7 +251,7 @@ Nodo* eliminar(Nodo* nodo, int valor)
         return nodo;
     }
 
-    else if(valor < nodo->dato) // cuando el valor es menor que ek valor del nodo actual, esta en el subarbol izq.
+    else if(valor < nodo->dato)
     {
         nodo->h_izq = eliminar(nodo->h_izq, valor);
     }
@@ -266,7 +263,7 @@ Nodo* eliminar(Nodo* nodo, int valor)
 
     else
     {
-        //Nodo no encontrado
+        //Nodo con 1 hijo.
         if(nodo->h_izq == NULL || nodo->h_der == NULL)
         {
             if(nodo->h_izq != NULL)
@@ -282,8 +279,8 @@ Nodo* eliminar(Nodo* nodo, int valor)
         else
         {
             Nodo* sucesor = obtenerMinimo(nodo->h_der);
-            nodo->dato = sucesor->dato; //Una vez que encontramos el sucesor, tomamos el valor de ese nodo y lo copiamos al nodo que estamos eliminando. De esta manera, el nodo que estamos eliminando es reemplazado por el valor del sucesor.
-            nodo->h_der = eliminar(nodo->h_der, sucesor->dato); //Ahora, necesitamos eliminar el sucesor en el subárbol derecho, ya que hemos copiado su valor al nodo a eliminar. Es importante que eliminemos el sucesor, ya que ha sido copiado al nodo original, pero aún sigue existiendo en el árbol.
+            nodo->dato = sucesor->dato;
+            nodo->h_der = eliminar(nodo->h_der, sucesor->dato);
         }
     }
 
@@ -293,7 +290,7 @@ Nodo* eliminar(Nodo* nodo, int valor)
     }
 
     //Actualizar altura
-    nodo->altura = 1 + max(altura(nodo->h_izq), altura(nodo->h_der)); //sacas el maximo entre ambos subarboles y se le suma 1.
+    nodo->altura = 1 + max(altura(nodo->h_izq), altura(nodo->h_der));
 
 
     //Calcular factor balanceo:
@@ -326,30 +323,30 @@ Nodo* eliminar(Nodo* nodo, int valor)
 
 Cola*crearCola(int capacidad)
 {
-    Cola* cola = (Cola*)malloc(sizeof(Cola)); //asignamos memoria a la cola
-    cola->arreglo = (Nodo**)malloc(capacidad*sizeof(Nodo*));//reservando memoria para un arreglo de tamaño capacidad (int) donde cada elemento es un puntero a Nodo. Solo contiene direcciones de memoria, no el nodo en si.
-    cola->frente = 0;// es el indice donde se va a colocar el primer elemento de la cola. Señala el primer elemento que se va a sacar.
-    cola->ultimo = -1; // es la ultima posicion ocupada en la cola, lugar donde se agregara el primer elemento. Señala que el primer elemento se encuentra en la posicion 0 del arreglo (xq cuando se inserte un elemento pasa de -1 a 0).
-    cola->capacidad = capacidad;// asignamos el parametro capacidad al campo capacidad de la estructura cola, garantizando q tenga un limite en la cantidad de elementos que puede almacenar (tamb para verificar si esta llena o vacia).
+    Cola* cola = (Cola*)malloc(sizeof(Cola));
+    cola->arreglo = (Nodo**)malloc(capacidad*sizeof(Nodo*));
+    cola->frente = 0;
+    cola->ultimo = -1;
+    cola->capacidad = capacidad;
     return cola;
 }
 
 int colaVacia(Cola* cola)
 {
-    return cola->ultimo < cola->frente;// comparas el ultimo valor con el valor frente. Si ultimo es menor a frente, la cola va a estar vacia. Lo contrario, esta llena. Retorna 1 si esta vacia, 0 si no.
+    return cola->ultimo < cola->frente;
 }
 
 void encola(Cola* cola, Nodo* nodo)
 {
-    cola->ultimo++;//Incrementas ultimo para apuntar al siguiente espacio
-    cola->arreglo[cola->ultimo] = nodo;// Asignas el puntero al nodo en la ultima posicion, o sea nodo es igual a la ultima posicion del arreglo de la cola.
+    cola->ultimo++;
+    cola->arreglo[cola->ultimo] = nodo;
 }
 
 Nodo* desencola(Cola* cola)
 {
-    Nodo* nodo = cola->arreglo[cola->frente];//Obtiene el nodo que está en el frente de la cola
-    cola->frente++;//Incrementa el índice `frente` para apuntar al siguiente nodo
-    return nodo; //Devuelve el nodo desencolado
+    Nodo* nodo = cola->arreglo[cola->frente];
+    cola->frente++;
+    return nodo;
 }
 
 void recorridoHorizontal(Nodo* nodo)
@@ -359,24 +356,24 @@ void recorridoHorizontal(Nodo* nodo)
         return;
     }
 
-    Cola* cola = crearCola(1<<nodo->altura); // creas una nueva cola.
-    encola(cola, nodo);// encolas/insertas el nodo raiz
+    Cola* cola = crearCola(1<<nodo->altura);
+    encola(cola, nodo);
 
-    while(!colaVacia(cola))// mientras la cola no este vacia:
+    while(!colaVacia(cola))
     {
-        Nodo* nodoNuevo = desencola(cola);// desencolas el siguiente nodo
+        Nodo* nodoNuevo = desencola(cola);
         imprimir(nodoNuevo);
 
         if(nodoNuevo->h_izq != NULL)
         {
-            encola(cola, nodoNuevo->h_izq);// si tiene hijo izquierdo, lo encolas
+            encola(cola, nodoNuevo->h_izq);
         }
 
         if(nodoNuevo->h_der != NULL)
         {
-            encola(cola, nodoNuevo->h_der); // si tiene hijo derecho, lo encolas tambien
+            encola(cola, nodoNuevo->h_der);
         }
-    } // imprimis el nodo desencolado y luego verificas sus hijos para agregar a la cola, si es que existen. Xq vos sacas 1 no mas, si tiene hijos hay q agregarlos a la cola, no pueden quedar ahi en el aire.
+    }
 }
 
 void imprimir(Nodo* nodo)
