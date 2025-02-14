@@ -46,9 +46,9 @@ int main()
 {
     Nodo* raiz = NULL;
     int numero;
-    char opcion;
+    int opcion;
 
-while(opcion != '3')
+while(opcion != 3)
 {
     printf("\nMenu: \n");
     printf("Ingrese 1 si quiere agregar un elemento al arbol. \n");
@@ -56,11 +56,11 @@ while(opcion != '3')
     printf("Ingrese 3 para terminar el programa. \n");
     printf("Elige una opcion: \n");
 
-    scanf(" %c", &opcion);
+    scanf("%d", &opcion);
 
     switch(opcion)
     {
-    case '1':
+    case 1:
         printf("Ingrese un numero para el Arbol AVL: \n");
         scanf("%d", &numero);
         raiz = insertar(raiz, numero);
@@ -69,7 +69,7 @@ while(opcion != '3')
         printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
         break;
 
-    case '2':
+    case 2:
         if(raiz == NULL)
         {
             printf("Arbol AVL vacio. No se puede eliminar el elemento. \n");
@@ -87,7 +87,7 @@ while(opcion != '3')
             break;
         }
 
-    case '3':
+    case 3:
         printf("Programa finalizado, Arbol AVL final con los datos insertados/eliminados: \n");
         recorridoHorizontal(raiz);
         printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
@@ -270,7 +270,7 @@ Nodo* eliminar(Nodo* nodo, int valor)
             {
                 nodo = nodo->h_izq;
             }
-            else 
+            else
             {
                 nodo = nodo->h_der;
             }
