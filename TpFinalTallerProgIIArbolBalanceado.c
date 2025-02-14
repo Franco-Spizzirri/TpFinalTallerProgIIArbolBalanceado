@@ -270,7 +270,7 @@ Nodo* eliminar(Nodo* nodo, int valor)
             {
                 nodo = nodo->h_izq;
             }
-            else if(nodo->h_der == NULL)
+            else 
             {
                 nodo = nodo->h_der;
             }
