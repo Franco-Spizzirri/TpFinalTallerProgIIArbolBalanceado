@@ -61,40 +61,40 @@ while(opcion != 3)
     switch(opcion)
     {
     case 1:
-        printf("Ingrese un numero para el Arbol AVL: \n");
+        printf("\nIngrese un numero para el Arbol AVL: \n");
         scanf("%d", &numero);
         raiz = insertar(raiz, numero);
-        printf("Recorrido horizontal con %d agregado: \n", numero);
+        printf("\nRecorrido horizontal con %d agregado: \n\n", numero);
         recorridoHorizontal(raiz);
-        printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
+        printf("\n\nAltura actual del Arbol AVL: %d\n", altura(raiz));
         break;
 
     case 2:
         if(raiz == NULL)
         {
-            printf("Arbol AVL vacio. No se puede eliminar el elemento. \n");
+            printf("\nArbol AVL vacio. No se puede eliminar el elemento. \n");
             printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
             break;
         }
         else
         {
-            printf("Ingrese el elemento que quieres eliminar: \n");
+            printf("\nIngrese el elemento que quieres eliminar: \n");
             scanf("%d", &numero);
             raiz = eliminar(raiz, numero);
-            printf("Recorrido horizontal con %d eliminado: \n", numero);
+            printf("\nRecorrido horizontal con %d eliminado: \n\n", numero);
             recorridoHorizontal(raiz);
-            printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
+            printf("\n\nAltura actual del Arbol AVL: %d\n", altura(raiz));
             break;
         }
 
     case 3:
-        printf("Programa finalizado, Arbol AVL final con los datos insertados/eliminados: \n");
+        printf("\nPrograma finalizado, Arbol AVL final con los datos insertados/eliminados: \n\n");
         recorridoHorizontal(raiz);
-        printf("\nAltura actual del Arbol AVL: %d\n", altura(raiz));
+        printf("\n\nAltura final del Arbol AVL: %d\n", altura(raiz));
         break;
 
     default:
-        printf("Opcion no valida. Intenta de nuevo: \n");
+        printf("\nOpcion no valida. Intenta de nuevo: \n");
         break;
     }
 }
